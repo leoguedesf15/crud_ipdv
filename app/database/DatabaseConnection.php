@@ -1,7 +1,8 @@
 <?php 
 namespace app\database;
 use PDO;
-class DatabaseConnection extends PDO implements IConnection {
+
+class DatabaseConnection extends PDO {
     private IConfig $config;
     private $transaction;
     function __construct(){
@@ -15,20 +16,7 @@ class DatabaseConnection extends PDO implements IConnection {
         parent::__construct($connectionString,$this->config->get('username'),$this->config->get('password')); 
     }
     
-    //Interface Overrides
-    public function connect(){
-        
-    }
-    public function closeConnection($success){
-        if($success){
-            $this->commit();
-        }else{
-           $this->rollBack();
-        }
-    }
-    public function printHello(){
-            return 'hello!';
-    }
-
+   
+    
 
 }

@@ -6,12 +6,14 @@ class Route{
     private $action;
     private $controller;
     private $path;
-
-    function __construct($method,$action,$controller,$path){
+    private $hasParams;
+    
+    function __construct($method,$action,$controller,$path,$hasParams){
         $this->method = $method;
         $this->action = $action;
         $this->controller = $controller;
         $this->path = $path;
+        $this->hasParams=$hasParams;
     }
 
     public function getController(){
@@ -27,5 +29,8 @@ class Route{
         return $this->action;
     }
 
+    public function hasParams(){
+        $this->setHasParams=true;
+    }
 }
 ?>

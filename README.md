@@ -23,3 +23,6 @@
     <li>Abrir o arquivo app/database/DatabaseConfig.php e personalizar as configurações de acesso ao banco (user, senha e porta).</li>
     <li>Acessar o projeto em http://localhost/crud_ipdv ou https://localhost/crud_ipdv (caso o ambiente local possua SSL configurado)</li>
 </ol>
+
+SETAR VARIÁVEL GLOBAL DE BASEPATH em bootstrap.php
+SETAR VARIÁVEIS DE BANCO DE DADOS EM DATABASECONFIG.PHP
