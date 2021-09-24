@@ -5,6 +5,6 @@ interface IController{
     function show($id);
     function update($id);
     function destroy($id);
-    function create();
+    function store();
 }
 ?>

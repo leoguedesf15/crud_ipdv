@@ -25,6 +25,14 @@ abstract class DAO{
         $this->query="UPDATE ".$this->table_name." SET ".$setStr;
         return $this;
     }
+    function insertInto($obj,$primaryKey){
+        $arrChaves = $obj->getClassVars();
+        unset($arrChaves[0]);
+        $data = $obj->jsonSerialize();
+        unset($data[$primaryKey]);
+        $this->query = "INSERT INTO ".$this->table_name." (".implode(",",$arrChaves).") VALUES ('".implode("','",$data)."');";        
+        return $this;
+    }
     
     function delete(){
         $this->query = " DELETE FROM ".$this->table_name." ";
@@ -47,6 +55,7 @@ abstract class DAO{
         
         return $stmt;        
     }
+    
     function execute(){
         $this->connection->beginTransaction();
         $stmt = $this->connection->prepare($this->query);
@@ -62,8 +71,6 @@ abstract class DAO{
         $this->query.= " ".$command." ";
         return $this;
     }
-
-
 
 }
 ?>

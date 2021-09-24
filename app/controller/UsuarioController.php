@@ -7,26 +7,25 @@ use app\model\entity\Usuario;
 use app\model\service\UsuarioService;
 
 class UsuarioController implements IController{
-    
+     private $apiController;
+     function __construct(){
+          $this->apiController = new ApiController();
+     }
+
      function index(){          
-          $apiController = new ApiController();
-          $apiController->index(new UsuarioService());
+          $this->apiController->index(new UsuarioService());
      } 
      function show($id){
-          $apiController = new ApiController;
-          $apiController->show($id, new UsuarioService());
+          $this->apiController->show($id, new UsuarioService());
      }    
-     function update($id){
-          
-          $apiController = new ApiController();
-          $apiController->update($id,new UsuarioService());         
+     function update($id){          
+          $this->apiController->update($id,new UsuarioService());         
      }
      function destroy($id){
-         $apiController = new ApiController();
-         $apiController->destroy($id,new UsuarioService());
+         $this->apiController->destroy($id,new UsuarioService());
      }
-     function create(){
-          echo 'MÉTDOO CCREATE';
+     function store(){                 
+          $this->apiController->store($_POST,new UsuarioService()); 
      }
 
 

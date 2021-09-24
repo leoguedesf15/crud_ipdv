@@ -4,12 +4,6 @@ namespace app\controller;
 
 class ApiController{
     
-    
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index($class)
     {        
         $objs = $class::all();    
@@ -21,40 +15,12 @@ class ApiController{
         $apiResponse->response();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request,$rules, $classInstance)
-    {
+    public function store($body,$classInstance){
         
-        // array_merge($request->all(), ['id_usuario' => JWTAuth::user()->id]);
-        //if(UserController::itsMe($request->id_usuario)){
-            $validator = Validator::make($request->all(),$rules);
-            if($validator->fails()){
-              $apiResponse = new ApiResponse(false,"Dados inválidos",$validator->errors(),[],400);
-            }else{
-                $apiResponse= new ApiResponse(true,"Dados cadastrados com sucesso!",[],get_class($classInstance)::create($request->all()),201);
-            }
-            $apiResponse->response();
-        /*}
-        else{
-            $errors=[];
-            $errors_id_usuario=[];            
-            array_push($errors_id_usuario,"Não é correspondente com o usuário autenticado!");
-            $errors["id_usuario"]=$errors_id_usuario;           
-            return $this->stopExecution("Não é permitido cadastrar dados na conta de outro usuário!",null,$errors);
-        }*/
-    }
+          $apiResponse= new ApiResponse(true,"Dados cadastrados com sucesso!",[],get_class($classInstance)::create($body),201);            
+          $apiResponse->response();
+     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id, $classInstance)
     {
         $object = get_class($classInstance)::find($id);      
@@ -66,18 +32,14 @@ class ApiController{
         }
         $apiResponse->response();
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update($id, $classInstance)
     {    
         $body=file_get_contents('php://input');        
-        $payload = ApiController::handle_put_payload($body); 
+        $payload = ApiController::handle_put_payload($body);
+        if($payload == null){
+            $this->stopExecution("Parâmetros inválidos",[],["Nenhum parâmetro enviado"],400);
+        } 
         $object = get_class($classInstance)::find($id);//->where('id_usuario',JWTAuth::user()->id);
         if(is_null($object)){
             $apiResponse = new ApiResponse(false,"Registro não encontrado!",[],[],404);
@@ -89,15 +51,9 @@ class ApiController{
         $apiResponse->response();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id, $classInstance)
     {
-        $object = get_class($classInstance)::find($id);
+        $object = get_class($classInstance)::find($id);        
         if(is_null($object)){
             $apiResponse = new ApiResponse(false,"Registro não encontrado",[],[],404);
         }else{
@@ -118,12 +74,18 @@ class ApiController{
 
     public static function handle_put_payload($payload){
         $params = explode("&",$payload);
+
         $return = array();
-        foreach($params as $param){
-            $splitParam = explode("=",$param);
-            $key = urldecode($splitParam[0]);
-            $value=urldecode($splitParam[1]);
-            $return[$key] = $value;
+
+        if(sizeof($params)>0 && $params[0]!=""){
+            foreach($params as $param){
+                $splitParam = explode("=",$param);
+                $key = urldecode($splitParam[0]);            
+                $value=urldecode($splitParam[1]);
+                $return[$key] = $value;
+            }
+        }else{
+            return null;
         }
         return $return;
     }

@@ -6,5 +6,6 @@ interface IService{
     public static function update($id, $payload);
     public static function validaPayload($payload);
     public static function destroy($id);
+    public static function create($payload);
 }
 ?>
