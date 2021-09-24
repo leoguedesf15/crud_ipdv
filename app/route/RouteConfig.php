@@ -1,10 +1,10 @@
 <?php
-    use app\controller\ClienteController;
+    use app\controller\UsuarioController;
     use app\route\RouteController;
     RouteController::initialize();
-    RouteController::addRoute('/cliente',ClienteController::class,'index','GET');
-    RouteController::addRoute('/cliente/$',ClienteController::class,'show','GET');
-    RouteController::addRoute('/cliente',ClienteController::class,'create','POST');
-    RouteController::addRoute('/cliente',ClienteController::class,'update','PUT');
-    RouteController::addRoute('/cliente/$',ClienteController::class,'destroy','DELETE');
+    RouteController::addRoute('/usuario',UsuarioController::class,'index','GET');
+    RouteController::addRoute('/usuario/$',UsuarioController::class,'show','GET');
+    RouteController::addRoute('/usuario',UsuarioController::class,'create','POST');
+    RouteController::addRoute('/usuario',UsuarioController::class,'update','PUT');
+    RouteController::addRoute('/usuario/$',UsuarioController::class,'destroy','DELETE');
 ?>

@@ -1,6 +1,6 @@
 <?php
 namespace app\Route;
-use app\controller\ClienteController;
+use app\controller\UsuarioController;
 class Route{
     private $method;
     private $action;

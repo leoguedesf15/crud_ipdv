@@ -3,12 +3,12 @@ namespace app\controller;
 
 use app\controller\IController;
 use app\controller\ApiController;
-use app\model\service\ClienteService;
+use app\model\service\UsuarioService;
 
-class ClienteController implements IController{
+class UsuarioController implements IController{
     
     function index(){
-         ClienteService::all();   
+         UsuarioService::all();   
         
     } 
     function show($params){
@@ -17,7 +17,7 @@ class ClienteController implements IController{
      function update($params){
         $body=file_get_contents('php://input');        
         $params = ApiController::handle_put_payload($body);
-        $servico = new ClienteServico();          
+        $servico = new UsuarioService();          
      }
      function destroy($params){
 

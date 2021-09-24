@@ -20,11 +20,12 @@ abstract class DAO{
     }
 
     function get(){
-        echo $this->query;
-        // $this->connection->beginTransaction();
-        // $result = $this->connection->query($this->query);
-        // $this->connection->commit();
-        // return $result;
+        
+        $this->connection->beginTransaction();
+        $result = $this->connection->query($this->query);
+        $this->connection->commit();
+        var_dump($this->connection->errorInfo());
+        return $result;
     }
     function orderBy($arrayOrderBy){
         

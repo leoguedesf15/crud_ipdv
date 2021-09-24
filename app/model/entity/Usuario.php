@@ -1,12 +1,12 @@
 <?php
 namespace app\model\entity;
-class Cliente{
-    private $idCliente;
+class Usuario{
+    private $idUsuario;
     private $nome;
     private $cpf;
 
-    function __construct($idCliente,$nome,$cpf){
-        $this->idCliente = $idCliente;
+    function __construct($idUsuario,$nome,$cpf){
+        $this->idUsuario = $idUsuario;
         $this->nome=$nome;
         $this->cpf=$cpf;
     }
