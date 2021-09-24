@@ -7,7 +7,6 @@ use app\model\entity\Cargo;
 
 class UsuarioDAO extends DAO{    
     private $table_name="usuarios"; 
-    private $classesJoint;
 
     function __construct(DatabaseConnection $connection){
         $this->classesJoint = array();
@@ -16,7 +15,7 @@ class UsuarioDAO extends DAO{
 
     
     function get(){
-        $stmt = parent::get();        
+        $stmt = parent::get();               
         $usuarios=array();
         while($usuario = $stmt->fetchObject(Usuario::class)){
             $serialized = $usuario->jsonSerialize();
@@ -25,6 +24,7 @@ class UsuarioDAO extends DAO{
         return $usuarios;
     }
 
+    
   
 
 }

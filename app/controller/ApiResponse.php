@@ -22,6 +22,7 @@ class ApiResponse implements JsonSerializable
     public function response(){        
         $resposta = $this->jsonSerialize();
         echo json_encode($resposta);
+        die();
     }
     function jsonSerialize(){
         return get_object_vars($this);

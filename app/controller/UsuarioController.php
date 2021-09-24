@@ -17,16 +17,19 @@ class UsuarioController implements IController{
           $apiController->show($id, new UsuarioService());
      }    
      function update($id){
-          $body=file_get_contents('php://input');        
-          $payload = ApiController::handle_put_payload($body);
-          $servico = new UsuarioService();          
+          
+          $apiController = new ApiController();
+          $apiController->update($id,new UsuarioService());         
      }
      function destroy($id){
-
+         $apiController = new ApiController();
+         $apiController->destroy($id,new UsuarioService());
      }
      function create(){
           echo 'MÉTDOO CCREATE';
      }
+
+
      
 }
 ?>
