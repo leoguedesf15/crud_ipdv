@@ -68,7 +68,7 @@ class ApiController{
         if(is_null($data)){
             $data = [];
         }      
-       $apiResponse = new ApiResponse(false,$reason,(object)$errors,$data,$statusCode);
+       $apiResponse = new ApiResponse(false,$reason,$errors,$data,$statusCode);
        $apiResponse->response();
     }
 

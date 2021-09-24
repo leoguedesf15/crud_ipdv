@@ -23,4 +23,7 @@ class Departamento implements JsonSerializable{
         $vars = get_object_vars($this);
         return $vars;
     }
+    public function getClassVars(){
+        return array_keys(get_class_vars(get_class($this)));
+    }
 }
