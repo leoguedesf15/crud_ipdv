@@ -2,29 +2,29 @@
 
 namespace app\controller;
 
-class ApiResponse
+use JsonSerializable;
+
+class ApiResponse implements JsonSerializable
 {
     private $success;
     private $message;
     private $errors;
     private $data;
-    private $statuscode;
 
     public function __construct($blnSuccess,$strMessage,$arrErrors,$arrData,$intStatusCode){
         $this->success = $blnSuccess;
         $this->message = $strMessage;
         $this->errors = $arrErrors;
         $this->data = $arrData;
-        $this->statusCode = $intStatusCode;
+        http_response_code($intStatusCode);        
     }
 
-    public function response(){
-        $response = new StdClass();
-        $response->message=$this->message;
-        $response->success=$this->success; 
-        $response->errors=$this->errors;
-        $response->data=$this->data;
-        http_response_code($this->statuscode);
-        return json_encode($response);
+    public function response(){        
+        $resposta = $this->jsonSerialize();
+        echo json_encode($resposta);
     }
+    function jsonSerialize(){
+        return get_object_vars($this);
+    }
+  
 }

@@ -2,9 +2,9 @@
 namespace app\controller;
 interface IController{
     function index();
-    function show($params);
-    function update($params);
-    function destroy($params);
-
+    function show($id);
+    function update($id);
+    function destroy($id);
+    function create();
 }
 ?>

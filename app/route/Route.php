@@ -30,7 +30,7 @@ class Route{
     }
 
     public function hasParams(){
-        $this->setHasParams=true;
+        return $this->hasParams;
     }
 }
 ?>

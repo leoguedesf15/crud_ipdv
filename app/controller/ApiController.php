@@ -10,15 +10,15 @@ class ApiController{
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($classInstance)
+    public function index($class)
     {        
-        $objs = get_class($classInstance)::all();        
+        $objs = $class::all();    
         if(sizeof($objs)==0){
             $apiResponse = new ApiResponse(false,"Nenhum registro encontrado!",[],[],404);
         }else{
             $apiResponse = new ApiResponse(true,"",[],$objs,200);
-        }
-        return $apiResponse->response();
+        } 
+        $apiResponse->response();
     }
 
     /**
@@ -38,7 +38,7 @@ class ApiController{
             }else{
                 $apiResponse= new ApiResponse(true,"Dados cadastrados com sucesso!",[],get_class($classInstance)::create($request->all()),201);
             }
-            return $apiResponse->response();
+            $apiResponse->response();
         /*}
         else{
             $errors=[];
@@ -55,21 +55,16 @@ class ApiController{
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $classInstance,$contexto_usuario = false)
+    public function show($id, $classInstance)
     {
         $object = get_class($classInstance)::find($id);      
         
         if(is_null($object)){
             $apiResponse = new ApiResponse(false,"Registro não encontrado!",[],[],404);
-        }else{ 
-            if($contexto_usuario){
-                if(!UserController::itsMe($object->id_usuario)){
-                    return $this->stopExecution("Este registro não pertence ao usuário autenticado!",null,null,403);
-                }
-            }
-            $apiResponse = new ApiResponse(true,"",[],$object->details(),200);
+        }else{          
+            $apiResponse = new ApiResponse(true,"",[],$object,200);
         }
-        return $apiResponse->response();
+        $apiResponse->response();
     }
 
     /**
@@ -95,7 +90,7 @@ class ApiController{
                 
                 }
             }
-        return $apiResponse->response();
+        $apiResponse->response();
     }
 
     /**
@@ -114,7 +109,7 @@ class ApiController{
                 $apiResponse = new ApiResponse(true,"Dados removidos com sucesso!",[],$object,200);
             }
         }
-        return $apiResponse->response();  
+        $apiResponse->response();  
     }
     
     public function stopExecution($reason,$data=null,$errors=null,$statusCode=500){  
@@ -122,7 +117,7 @@ class ApiController{
             $data = [];
         }      
        $apiResponse = new ApiResponse(false,$reason,(object)$errors,$data,$statusCode);
-       return $apiResponse->response();
+       $apiResponse->response();
     }
 
     public static function handle_put_payload($payload){

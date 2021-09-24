@@ -1,9 +1,11 @@
 <?php
 namespace app\model\dao;
 use app\database\DatabaseConnection;
+use app\model\entity\Usuario;
+
 abstract class DAO{
     private $connection;
-    private $query;
+    protected $query;
     private $table_name;
     public function __construct(DatabaseConnection $conn,$table_name){
         $this->connection  = $conn;
@@ -14,24 +16,32 @@ abstract class DAO{
         $this->query="Select * from ".$this->table_name." ";
         return $this;        
     }
+    function select($arrayAtributtes){
+        $this->query="Select ".implode(',',$arrayAtributtes)." from ".$this->table_name." ";
+        return $this;
+    }
     function where($condition){
         $this->query.=" where ".$condition;
         return $this;
     }
-
-    function get(){
-        
+    
+    function get(){        
         $this->connection->beginTransaction();
-        $result = $this->connection->query($this->query);
-        $this->connection->commit();
-        var_dump($this->connection->errorInfo());
-        return $result;
-    }
-    function orderBy($arrayOrderBy){
+        $stmt = $this->connection->prepare($this->query);
+        if($stmt->execute()){
+            $this->connection->commit();
+        }else{
+            $this->connection->rollBack();
+            //LANÇAR EXCEÇÃO
+        }
         
+        return $stmt;        
     }
     function execute(){
         
     }
+
+
+
 }
 ?>
