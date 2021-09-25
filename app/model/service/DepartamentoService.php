@@ -31,12 +31,15 @@ class DepartamentoService implements IService{
         try{
             $dbCon = new DatabaseConnection();
             $departamentoDAO = new DepartamentoDAO($dbCon);
-            $userDao = new UsuarioDAO($dbCon);                
+            $userDao = new UsuarioDAO($dbCon); 
+            $centroDeCustoDAO = new CentroDeCustoDAO($dbCon);               
             $departamentos = $departamentoDAO->selectAll()->where(" ".$this->chave."=".$id)->generic(";")->get();
             if(sizeof($departamentos)>0){
                 $departamento = $departamentos[0];     
                 $users = $userDao->selectAll()->where(" id_departamento_fk=".$id)->get();
+                $centro_de_custo = $centroDeCustoDAO->selectAll()->where(" id_centro_custo=".$departamento["id_centro_custo_fk"])->get();
                 $departamento["usuarios"] = $users;
+                $departamento["centro_de_custo"] = $centro_de_custo[0];
                 $departamentos[0] = $departamento;
                 return $departamentos;
             }else{
@@ -50,7 +53,7 @@ class DepartamentoService implements IService{
     public function update($id, $payload){
         $payload[$this->chave] = $id;
         try{
-        if($this->validaPayload($payload)){
+        if($this->validaPayload($payload) && $this->validaInsercao($payload["id_centro_custo_fk"])){
             $departamentoDAO = new DepartamentoDAO(new DatabaseConnection());
             $setStr="   
             nome_departamento='".$payload["nome_departamento"]."',
@@ -90,7 +93,7 @@ class DepartamentoService implements IService{
                 if($departamentoDAO->insertInto($departamento,$this->chave)->execute()){
                     return $departamento->jsonSerialize();
                 }else{
-                    return $this->controller->stopExecution("Erro ao salvar Cargo!");
+                    return $this->controller->stopExecution("Erro ao salvar Departamento!");
                 }            
             }else{
                 $this->controller->stopExecution("Parâmetros inválidos!",[],$this->errosValidacao,400);
@@ -98,17 +101,17 @@ class DepartamentoService implements IService{
         }catch(Exception $ex){
             $this->lancarExcecao($ex);
         }  
-    }
+    }    
     public function validaInsercao($id_centro_custo){
         $centroCustoServico = new CentroDeCustoService();
-        return $centroCustoServico->find($id_centro_custo)==null;
+        return $centroCustoServico->find($id_centro_custo)!=null;
     }
     public function validarRemocao($id){
         $cargos = $this->find($id);
         $this->errosValidacao=array();
         $cargo=$cargos[0];
         if(sizeof($cargo["usuarios"])>0){
-            array_push($this->errosValidacao,"Existem usuários relacionados!");
+            array_push($this->errosValidacao,"Existem dados relacionados!");
         }
         return sizeof($this->errosValidacao)==0;
     }

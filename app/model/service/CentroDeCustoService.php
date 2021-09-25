@@ -5,7 +5,8 @@ use app\database\DatabaseConnection;
 use app\model\dao\UsuarioDAO;
 use app\model\service\IService;
 use app\model\dao\CentroDeCustoDAO;
-use app\model\entity\Cargo;
+use app\model\dao\DepartamentoDAO;
+use app\model\entity\CentroDeCusto;
 use app\model\service\Validation;
 class CentroDeCustoService implements IService{
     private $errosValidacao;
@@ -29,14 +30,14 @@ class CentroDeCustoService implements IService{
         try{
         $dbCon = new DatabaseConnection();
         $CentroDeCustoDAO = new CentroDeCustoDAO($dbCon);
-        $userDao = new UsuarioDAO($dbCon);                
-        $cargos = $CentroDeCustoDAO->selectAll()->where(" ".$this->chave."=".$id)->get();
-        if(sizeof($cargos)>0){
-            $cargo = $cargos[0];     
-            $users = $userDao->selectAll()->where(" id_cargo_fk=".$id)->get();
-            $cargo["usuarios"] = $users;
-            $cargos[0] = $cargo;
-            return $cargos;
+        $departamentoDao = new DepartamentoDAO($dbCon);                
+        $centrosdecustos = $CentroDeCustoDAO->selectAll()->where(" ".$this->chave."=".$id)->get();
+        if(sizeof($centrosdecustos)>0){
+            $centro_custo = $centrosdecustos[0];     
+            $departamentos = $departamentoDao->selectAll()->where(" id_centro_custo_fk=".$id)->get();
+            $centro_custo["departamentos"] = $departamentos;
+            $centrosdecustos[0] = $centro_custo;
+            return $centrosdecustos;
         }else{
             return null;
         }
@@ -51,8 +52,7 @@ class CentroDeCustoService implements IService{
         if($this->validaPayload($payload)){
             $CentroDeCustoDAO = new CentroDeCustoDAO(new DatabaseConnection());
             $setStr="   
-            nome_cargo='".$payload["nome_cargo"]."',
-            descricao='".$payload["descricao"]."'
+            nome_centro_custo='".$payload["nome_centro_custo"]."'
             ";
             return $CentroDeCustoDAO->update($setStr)->where(" ".$this->chave."=".$id)->generic(";")->execute();
             
@@ -78,17 +78,16 @@ class CentroDeCustoService implements IService{
     }
 
     public function create($payload){
-        $payload["id_cargo"] = "DEFAULT";
+        $payload["id_centro_custo"] = "DEFAULT";
         try{
             if($this->validaPayload($payload)){
-                $cargo = new Cargo();
-                $cargo->setNome_cargo($payload["nome_cargo"]);
-                $cargo->setDescricao($payload["descricao"]);
-                $CentroDeCustoDAO = new CentroDeCustoDAO(new DatabaseConnection());
-                if($CentroDeCustoDAO->insertInto($cargo,$this->chave)->execute()){
-                    return $cargo->jsonSerialize();
+                $centroDeCusto = new CentroDeCusto();
+                $centroDeCusto->setNome_centro_custo($payload["nome_centro_custo"]);
+                $centroDeCustoDAO = new CentroDeCustoDAO(new DatabaseConnection());
+                if($centroDeCustoDAO->insertInto($centroDeCusto,$this->chave)->execute()){
+                    return $centroDeCusto->jsonSerialize();
                 }else{
-                    return $this->controller->stopExecution("Erro ao salvar Cargo!");
+                    return $this->controller->stopExecution("Erro ao salvar Centro de Custo!");
                 }            
             }else{
                 $this->controller->stopExecution("Parâmetros inválidos!",[],$this->errosValidacao,400);
@@ -98,19 +97,19 @@ class CentroDeCustoService implements IService{
         }  
     }
     public function validarRemocao($id){
-        $cargos = $this->find($id);
+        $centros_de_custo = $this->find($id);
         $this->errosValidacao=array();
-        $cargo=$cargos[0];
-        if(sizeof($cargo["usuarios"])>0){
-            array_push($this->errosValidacao,"Existem usuários relacionados!");
+        $centro_de_custo=$centros_de_custo[0];
+        if(sizeof($centro_de_custo["departamentos"])>0){
+            array_push($this->errosValidacao,"Existem dados relacionados!");
         }
         return sizeof($this->errosValidacao)==0;
     }
     public function validaPayload($payload){
         $this->errosValidacao = array();
-        $cargo = new Cargo();
+        $centroDeCusto = new CentroDeCusto();
         $validation = new Validation();
-        foreach($cargo->getClassVars() as $var){ 
+        foreach($centroDeCusto->getClassVars() as $var){ 
             if(isset($this->validacoes[$var])){             
                 if(!$validation->validate(isset($payload[$var])?$payload[$var]:null,$this->validacoes[$var])){
                     array_push($this->errosValidacao,$var);

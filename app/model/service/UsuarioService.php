@@ -95,7 +95,8 @@ class UsuarioService implements IService{
                 $usuario = new Usuario();       
                 $usuario->setNome($payload["nome"]);
                 $usuario->setEmail($payload["email"]);
-                $usuario->setSenha($payload["senha"]);
+                $senhaEncriptada = md5($payload["senha"]);
+                $usuario->setSenha($senhaEncriptada);
                 $usuario->setDtnascimento($payload["dtnascimento"]);
                 $usuario->setId_cargo_fk($payload["id_cargo_fk"]);
                 $usuario->setId_departamento_fk($payload["id_departamento_fk"]);

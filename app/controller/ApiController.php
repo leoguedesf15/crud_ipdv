@@ -3,7 +3,9 @@
 namespace app\controller;
 
 class ApiController{
-    
+    //A camada controller da minha aplicação serve apenas para instanciar o serviço necessário para
+    //buscar a informação e efetuar as validações necessárias. Serve também para delegar responsabilidades
+    //a fim de obter os dados necessários.
     public function index($classInstance)
     {   
         $this->verificarAutenticacao();
@@ -106,7 +108,8 @@ class ApiController{
 
     private function verificarAutenticacao(){
         $headers = apache_request_headers();
-        if(AuthController::verificarToken(substr($headers["Authorization"],7))){
+      
+        if(isset($headers["Authorization"]) && AuthController::verificarToken(substr($headers["Authorization"],7))){
             return ;
         }
         $this->stopExecution("Não autorizado!",null,null,401);

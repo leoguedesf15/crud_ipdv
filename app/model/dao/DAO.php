@@ -5,8 +5,9 @@ use app\model\entity\Usuario;
 use ErrorException;
 
 abstract class DAO{
-    // Nesta classe foi usado o padrão de projetos Builder para construção das queries com mais facilidade,
-    // organização
+    // Nesta classe foi usada uma adaptação do padrão de projetos Builder para construção das queries com mais facilidade,
+    // organização e prevenção de reescrita de código desnecessário.
+    // O builder neste caso está sendo consumido pela camada de serviços, aonde está toda a lógica de negócios da aplicação.
     private $connection;
     protected $query;
     private $table_name;
@@ -29,10 +30,11 @@ abstract class DAO{
         return $this;
     }
     function insertInto($obj,$primaryKey){
+       
         $arrChaves = $obj->getClassVars();
         unset($arrChaves[0]);
         $data = $obj->jsonSerialize();
-        unset($data[$primaryKey]);
+        unset($data[$primaryKey]);       
         $this->query = "INSERT INTO ".$this->table_name." (".implode(",",$arrChaves).") VALUES ('".implode("','",$data)."');";        
         return $this;
     }

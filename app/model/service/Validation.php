@@ -6,6 +6,7 @@ class Validation{
 
         $vals=explode("|",$validations);
         $return=true;
+
         foreach($vals as $validation){                    
             $arr = explode(":",$validation);
             $validation_name=$arr[0];

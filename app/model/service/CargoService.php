@@ -103,7 +103,7 @@ class CargoService implements IService{
         $this->errosValidacao=array();
         $cargo=$cargos[0];
         if(sizeof($cargo["usuarios"])>0){
-            array_push($this->errosValidacao,"Existem usuários relacionados!");
+            array_push($this->errosValidacao,"Existem dados relacionados!");
         }
         return sizeof($this->errosValidacao)==0;
     }

@@ -14,10 +14,10 @@ class CentroDeCusto implements JsonSerializable{
         return $this->nome_centro_custo;
     }
     public function setId_centro_custo($id_centro_custo){
-        $this->$id_centro_custo=$id_centro_custo;
+        $this->id_centro_custo=$id_centro_custo;
     }
     public function setNome_centro_custo($nome_centro_custo){
-        $this->$nome_centro_custo=$nome_centro_custo;
+        $this->nome_centro_custo=$nome_centro_custo;
     }
 
     public function jsonSerialize()
