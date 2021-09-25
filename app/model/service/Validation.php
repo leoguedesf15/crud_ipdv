@@ -4,18 +4,21 @@ class Validation{
 
     public function validate($value,$validations){
         $vals=explode("|",$validations);
-        
-        foreach($vals as $validation){   
-            echo $validation;        
+        $return=true;
+        foreach($vals as $validation){                    
             $arr = explode(":",$validation);
             $validation_name=$arr[0];
-            var_dump($validation_name);
             if(isset($arr[1])){
-                return $this->$validation_name($value,$arr[1]);
+                if(!$this->$validation_name($value,$arr[1])){
+                    $return=false;
+                }
             }else{
-                return $this->$validation_name($value);
+                if(!$this->$validation_name($value)){
+                    $return=false;
+                }
             }
         }
+        return $return;
     }    
     public function required($value){      
         return isset($value) && $value!="";
