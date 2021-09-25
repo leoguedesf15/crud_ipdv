@@ -1,7 +1,6 @@
 <?php
 
 namespace app\controller;
-
 use JsonSerializable;
 
 class ApiResponse implements JsonSerializable

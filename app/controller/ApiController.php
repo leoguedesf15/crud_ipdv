@@ -6,6 +6,7 @@ class ApiController{
     
     public function index($classInstance)
     {   
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;     
         $objs = $classInstance->all();    
@@ -18,6 +19,7 @@ class ApiController{
     }
 
     public function store($body,$classInstance){
+        $this->verificarAutenticacao();
           //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
           $classInstance->controller = $this;  
           $apiResponse= new ApiResponse(true,"Dados cadastrados com sucesso!",[],$classInstance->create($body),201);            
@@ -26,6 +28,7 @@ class ApiController{
 
     public function show($id, $classInstance)
     {
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;
         $object = $classInstance->find($id);      
@@ -40,6 +43,7 @@ class ApiController{
     
     public function update($id, $classInstance)
     {    
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;
         $body=file_get_contents('php://input');        
@@ -60,6 +64,7 @@ class ApiController{
 
     public function destroy($id, $classInstance)
     {
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;
         $object = $classInstance->find($id);        
@@ -81,7 +86,7 @@ class ApiController{
        $apiResponse->response();
     }
 
-    public function handle_put_payload($payload){
+    private function handle_put_payload($payload){
         $params = explode("&",$payload);
 
         $return = array();
@@ -97,6 +102,14 @@ class ApiController{
             return null;
         }
         return $return;
+    }
+
+    private function verificarAutenticacao(){
+        $headers = apache_request_headers();
+        if(AuthController::verificarToken(substr($headers["Authorization"],7))){
+            return ;
+        }
+        $this->stopExecution("Não autorizado!",null,null,401);
     }
 
 }

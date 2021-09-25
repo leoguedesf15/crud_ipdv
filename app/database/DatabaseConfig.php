@@ -2,6 +2,8 @@
 namespace app\database;
 
 class DatabaseConfig implements IConfig{
+    //DatabaseConfig implementa IConfig pois
+    //Se tivessemos mais de uma conexão a dados, cada Conexão teria suas configurações
     private $data =[
         'host'=>'localhost',
         'username'=>'postgres',

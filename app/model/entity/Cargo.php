@@ -4,6 +4,7 @@ namespace app\model\entity;
 use JsonSerializable;
 
 class Cargo implements JsonSerializable{
+    //ENTIDADES APENAS MODELAM DADOS!
     private $id_cargo;	
     private $nome_cargo;	
     private $descricao;

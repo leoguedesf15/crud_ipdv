@@ -1,5 +1,6 @@
 <?php
 
+use app\controller\AuthController;
 use app\controller\CargoController;
 use app\controller\CentroDeCustoController;
 use app\controller\DepartamentoController;
@@ -7,6 +8,8 @@ use app\controller\UsuarioController;
     use app\route\RouteController;
     RouteController::initialize();
     
+    RouteController::addRoute('/login',AuthController::class,'login','POST');
+
     RouteController::addRoute('/usuario',UsuarioController::class,'index','GET');
     RouteController::addRoute('/usuario/$',UsuarioController::class,'show','GET');
     RouteController::addRoute('/usuario',UsuarioController::class,'store','POST');

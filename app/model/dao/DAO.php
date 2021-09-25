@@ -5,6 +5,8 @@ use app\model\entity\Usuario;
 use ErrorException;
 
 abstract class DAO{
+    // Nesta classe foi usado o padrão de projetos Builder para construção das queries com mais facilidade,
+    // organização
     private $connection;
     protected $query;
     private $table_name;
