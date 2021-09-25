@@ -13,6 +13,15 @@ class UsuarioService implements IService{
     private $errosValidacao;
     private $chave = "id_usuario";
     public ApiController $controller;
+    private $validacoes=[
+        "id_usuario"=>"required",
+        "nome"=>"required|length:60",
+        "email"=>"required|length:50|email",
+        "senha"=>"required|length:20",
+        "dtnascimento"=>"required|date",
+        "id_cargo_fk"=>"required",
+        "id_departamento_fk"=>"required"
+    ];
     public function all(){        
        try{
            $dao = new UsuarioDAO(new DatabaseConnection());
@@ -107,11 +116,14 @@ class UsuarioService implements IService{
     public function validaPayload($payload){
         $this->errosValidacao = array();
         $usuario = new Usuario();
-        foreach($usuario->getClassVars() as $var){
-            if(!isset($payload[$var]) || $payload[$var]==""){
-                array_push($this->errosValidacao,$var);
+        $validation = new Validation();
+        foreach($usuario->getClassVars() as $var){ 
+            if(isset($this->validacoes[$var])){             
+                if(!$validation->validate(isset($payload[$var])?$payload[$var]:null,$this->validacoes[$var])){
+                    array_push($this->errosValidacao,$var);
+                }
             }
-        }
+        }        
         return sizeof($this->errosValidacao)==0;
     }
 

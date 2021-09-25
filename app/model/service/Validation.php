@@ -3,6 +3,7 @@ namespace app\model\service;
 class Validation{
 
     public function validate($value,$validations){
+
         $vals=explode("|",$validations);
         $return=true;
         foreach($vals as $validation){                    
@@ -25,6 +26,12 @@ class Validation{
     }
     public function length($value,$param){
         return strlen($value)<=$param;
+    }
+    public function email($value){
+        return preg_match(__EMAIL_PATTERN__,$value);
+    }
+    public function date($value){
+        return preg_match(__DATE_PATTERN__,$value);
     }
 
 }
