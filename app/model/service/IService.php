@@ -1,11 +1,11 @@
 <?php
 namespace app\model\service;
 interface IService{
-    public static function all();
-    public static function find($id);
-    public static function update($id, $payload);
-    public static function validaPayload($payload);
-    public static function destroy($id);
-    public static function create($payload);
+    public function all();
+    public function find($id);
+    public function update($id, $payload);
+    public function validaPayload($payload);
+    public function destroy($id);
+    public function create($payload);
 }
 ?>
