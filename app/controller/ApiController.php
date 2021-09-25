@@ -47,7 +47,7 @@ class ApiController{
         if($payload == null){
             $this->stopExecution("Parâmetros inválidos",[],["Nenhum parâmetro enviado"],400);
         } 
-        $object = $classInstance->find($id);//->where('id_usuario',JWTAuth::user()->id);
+        $object = $classInstance->find($id);
         if(is_null($object)){
             $apiResponse = new ApiResponse(false,"Registro não encontrado!",[],[],404);
         }else{            

@@ -2,7 +2,7 @@
 namespace app\model\dao;
 use app\database\DatabaseConnection;
 use app\model\entity\Usuario;
-use Exception;
+use ErrorException;
 
 abstract class DAO{
     private $connection;
@@ -44,14 +44,14 @@ abstract class DAO{
         return $this;
     }
     
-    function get(){        
-        $this->connection->beginTransaction();
+    function get() {        
+        $this->connection->beginTransaction();            
         $stmt = $this->connection->prepare($this->query);
         if($stmt->execute()){
             $this->connection->commit();
         }else{
             $this->connection->rollBack();
-            throw new Exception("Erro ao salvar registro no banco de dados!");
+            return null;
         }
         
         return $stmt;        
@@ -65,7 +65,7 @@ abstract class DAO{
             return true;
         }else{            
             $this->connection->rollBack();
-            throw new Exception("Erro ao salvar registro no banco de dados!");
+            throw new ErrorException("Erro ao salvar registro no banco de dados!");
         }
     }
     function generic($command){

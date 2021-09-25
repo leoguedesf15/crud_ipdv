@@ -17,7 +17,12 @@ class Departamento implements JsonSerializable{
     public function getId_centro_custo_fk(){
         return $this->id_centro_custo_fk;
     }
-
+    public function setNome_departamento($nome_departamento){
+        $this->nome_departamento=$nome_departamento;
+    }
+    public function setId_centro_custo_fk($id_centro_custo_fk){
+        $this->id_centro_custo_fk=$id_centro_custo_fk;
+    }
     public function jsonSerialize()
     {
         $vars = get_object_vars($this);

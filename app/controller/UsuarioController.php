@@ -3,7 +3,6 @@ namespace app\controller;
 
 use app\controller\IController;
 use app\controller\ApiController;
-use app\model\entity\Usuario;
 use app\model\service\UsuarioService;
 
 class UsuarioController implements IController{

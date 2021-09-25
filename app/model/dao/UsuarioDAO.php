@@ -4,7 +4,7 @@ namespace app\model\dao;
 use app\database\DatabaseConnection;
 use app\model\entity\Usuario;
 use app\model\entity\Cargo;
-
+use ErrorException;
 class UsuarioDAO extends DAO{    
     private $table_name="usuarios"; 
     private $primaryKey = "id_usuario";
@@ -15,7 +15,9 @@ class UsuarioDAO extends DAO{
     
     
     function get(){
-        $stmt = parent::get();               
+
+        $stmt = parent::get(); 
+        if(!isset($stmt)) throw new ErrorException("Erro ao buscar registro no banco de dados!");              
         $usuarios=array();
         while($usuario = $stmt->fetchObject(Usuario::class)){
             $serialized = $usuario->jsonSerialize();

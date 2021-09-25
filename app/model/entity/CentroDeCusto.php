@@ -4,20 +4,22 @@ namespace app\model\entity;
 use JsonSerializable;
 
 class CentroDeCusto implements JsonSerializable{
-    private $id_cargo;	
-    private $nome_cargo;	
-    private $descricao;
-    
-    public function getId_cargo(){
-        return $this->id_cargo;
-    }	
-    public function getNome_cargo(){
-        return $this->nome_cargo;
-    }	
-    public function getDescricao(){
-        return $this->descricao;
+    private $id_centro_custo;	
+    private $nome_centro_custo;
+
+    public function getId_centro_custo(){
+        return $this->id_centro_custo;
     }
-    
+    public function getNome_centro_custo(){
+        return $this->nome_centro_custo;
+    }
+    public function setId_centro_custo($id_centro_custo){
+        $this->$id_centro_custo=$id_centro_custo;
+    }
+    public function setNome_centro_custo($nome_centro_custo){
+        $this->$nome_centro_custo=$nome_centro_custo;
+    }
+
     public function jsonSerialize()
     {
         $vars = get_object_vars($this);

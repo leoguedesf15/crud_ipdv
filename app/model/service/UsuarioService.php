@@ -91,7 +91,7 @@ class UsuarioService implements IService{
 
         $payload["id_usuario"] = "DEFAULT";
         try{
-            if($this->validaPayload($payload)){
+            if($this->validaPayload($payload) && $this->validaInsercao($payload["id_cargo_fk"],$payload["id_departamento_fk"])){
                 $usuario = new Usuario();       
                 $usuario->setNome($payload["nome"]);
                 $usuario->setEmail($payload["email"]);
@@ -127,6 +127,13 @@ class UsuarioService implements IService{
         return sizeof($this->errosValidacao)==0;
     }
 
+    public function validaInsercao($id_cargo,$id_departamento){
+        $cargoService = new CargoService();
+        $departamentoService = new DepartamentoService();
+        return ($cargoService->find($id_cargo)!=null && 
+                $departamentoService->find($id_departamento)!=null
+                );
+    }
     private function lancarExcecao($ex){
         $this->controller->stopExecution($ex->getMessage());
     }
