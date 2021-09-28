@@ -1,5 +1,6 @@
 <?php
 
+use app\controller\ApiController;
 use app\controller\AuthController;
 use app\controller\CargoController;
 use app\controller\CentroDeCustoController;
@@ -9,6 +10,8 @@ use app\controller\UsuarioController;
     RouteController::initialize();
     
     RouteController::addRoute('/login',AuthController::class,'login','POST');
+    RouteController::addRoute('/validar-token',AuthController::class,'endPointValidacaoToken','POST');
+
 
     RouteController::addRoute('/usuario',UsuarioController::class,'index','GET');
     RouteController::addRoute('/usuario/$',UsuarioController::class,'show','GET');

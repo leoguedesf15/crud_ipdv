@@ -9,31 +9,19 @@ use Firebase\JWT\JWT;
 class JWTTokenService{
     private static $key= "pudimcommelancia"; 
     static function generate(){
-        //usei como base o tutorial em https://www.devmedia.com.br/como-o-jwt-funciona/40265 e adaptei ao php             
-        //Poderia gerá-lo com Firebase também. Porém preferi implementar na mão pra fins de comprovação de experiência
-        //gero um header e um payload
-         //encode pra json e base64
-         //gerar a assinatura
-         //devolver concatenados header, payload e sign com ponto entre eles
+        //usando firebase para geração e verificação do token
         $header =   [
                         'alg'=>'HS256',
                         'typ'=>'JWT'
                     ];
-        $header = json_encode($header);
-        $header = base64_encode($header);
                     
         $payload =  [
                         'exp'=>JWTTokenService::calcularIntervalo(),
                         'uid'=>1,
                         'email'=>'admin@admin'
                     ];
-        $payload = json_encode($payload);
-        $payload = base64_encode($payload);
-
-        $sign = hash_hmac('sha256',$header.'.'.$payload,JWTTokenService::$key,true);            
-        $signEncoded = base64_encode($sign);
         
-        $output = implode(".",[$header,$payload,$signEncoded]);
+        $output = JWT::encode($payload,JWTTokenService::$key,'HS256',NULL,$header);
         return $output;             
     }
 
