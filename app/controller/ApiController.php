@@ -9,7 +9,7 @@ class ApiController{
 
     public function index($classInstance)
     {   
-        //$this->verificarAutenticacao();
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;     
         $objs = $classInstance->all();    
@@ -22,7 +22,7 @@ class ApiController{
     }
 
     public function store($body,$classInstance){
-        //$this->verificarAutenticacao();
+        $this->verificarAutenticacao();
           //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
           $classInstance->controller = $this;  
           $apiResponse= new ApiResponse(true,"Dados cadastrados com sucesso!",[],$classInstance->create($body),201);            
@@ -31,7 +31,7 @@ class ApiController{
 
     public function show($id, $classInstance)
     {
-        //$this->verificarAutenticacao();
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;
         $object = $classInstance->find($id);      
@@ -46,7 +46,7 @@ class ApiController{
     
     public function update($id, $classInstance)
     {    
-        //$this->verificarAutenticacao();
+        $this->verificarAutenticacao();
         //injetando dependência pra trabalhar inversão de controle (caso o serviço precise estourar uma exceção)
         $classInstance->controller = $this;
         $body=file_get_contents('php://input');        
