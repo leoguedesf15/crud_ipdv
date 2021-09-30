@@ -17,7 +17,7 @@ class UsuarioService implements IService{
         "id_usuario"=>"required",
         "nome"=>"required|length:60",
         "email"=>"required|length:50|email",
-        "senha"=>"required|length:20",
+        "senha"=>"length:20",
         "dtnascimento"=>"required|date",
         "id_cargo_fk"=>"required",
         "id_departamento_fk"=>"required"
@@ -63,8 +63,7 @@ class UsuarioService implements IService{
                 $userDao = new UsuarioDAO(new DatabaseConnection());
                 $setStr="   
                 nome = '".$payload["nome"]."',
-                email = '".$payload["email"]."',
-                senha = '".$payload["senha"]."',
+                email = '".$payload["email"]."',               
                 dtnascimento = '".$payload["dtnascimento"]."',
                 id_cargo_fk = '".$payload["id_cargo_fk"]."',
                 id_departamento_fk = '".$payload["id_departamento_fk"]."' ";            
@@ -95,8 +94,7 @@ class UsuarioService implements IService{
                 $usuario = new Usuario();       
                 $usuario->setNome($payload["nome"]);
                 $usuario->setEmail($payload["email"]);
-                $senhaEncriptada = md5($payload["senha"]);
-                $usuario->setSenha($senhaEncriptada);
+                $usuario->setSenha($payload["senha"]);
                 $usuario->setDtnascimento($payload["dtnascimento"]);
                 $usuario->setId_cargo_fk($payload["id_cargo_fk"]);
                 $usuario->setId_departamento_fk($payload["id_departamento_fk"]);
