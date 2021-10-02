@@ -17,8 +17,7 @@ Mais comentários em cada classe...</p>
     <li>PHP - v 7.4 (versão utilizada - projeto não foi testado em outras versões) com extensão pdo_pgsql habilitada;</li>
     <li>PgAdmin4 ou qualquer outro gerenciador de banco de dados PostgreSQL</li>
 </ul>
-<h2>Após instalação automática!</h2>
-<ul><li>Abrir o arquivo app/database/DatabaseConfig.php e personalizar as configurações de acesso ao banco (user, senha e porta).</li></ul>
+<h2>Instruções</h2>
 <ol>
     <li>Na raiz do Apache execute o comando: git clone https://github.com/leoguedesf15/crud_ipdv.git</li>
      <li>Logo após execute php composer install</li>
