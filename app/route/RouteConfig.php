@@ -12,6 +12,7 @@ use app\controller\UsuarioController;
     RouteController::addRoute('/login',AuthController::class,'login','POST');
     RouteController::addRoute('/validar-token',AuthController::class,'endPointValidacaoToken','POST');
 
+    RouteController::addRoute('/upload',UsuarioController::class,'uploadInsert','POST');
 
     RouteController::addRoute('/usuario',UsuarioController::class,'index','GET');
     RouteController::addRoute('/usuario/$',UsuarioController::class,'show','GET');
